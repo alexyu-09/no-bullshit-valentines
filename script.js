@@ -122,40 +122,41 @@ function generateValentine() {
     // img.crossOrigin = "Anonymous"; // Removed to fix local file loading. Not needed for same-origin.
 
     img.onload = () => {
+        // Set canvas to match the original image dimensions exactly
+        canvas.width = img.width;
+        canvas.height = img.height;
+
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Draw background image
-        ctx.drawImage(img, 0, 0, 800, 600);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // Define text style
-        ctx.font = "bold 32px 'Manrope', sans-serif";
-        ctx.fillStyle = "white"; // Or maybe match the text color on image? White usually looks good on orange/red.
+        // Calculate scale factor relative to our reference width of 800px
+        // This ensures text looks the same size relative to the image, even if image is 2000px or 4000px
+        const referenceWidth = 800;
+        const scale = canvas.width / referenceWidth;
+
+        // Define text style with scaled font size
+        const fontSize = Math.round(32 * scale);
+        ctx.font = `bold ${fontSize}px 'Manrope', sans-serif`;
+        ctx.fillStyle = "white";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
-        // ctx.lineWidth = 4;
-        // ctx.strokeStyle = "black"; 
-        // Removing stroke for cleaner look if aiming for "DeDust" style, or keep it if needed for contrast. 
-        // The original requirement had black stroke. Let's keep it but maybe thinner or remove if it clashes.
-        // Let's try without stroke first as it might look cleaner on the new templates.
 
-        // Coordinates need adjustment based on visual inspection of new templates.
-        // "TO:" is roughly at y=380? 
-        // "FROM:" is roughly at y=480?
-        // Left alignment 'x' should be after the "TO: " text.
-        // Let's guess x=200 for now. The "TO:" label is short.
+        // Coordinates (Reference based on 800x800)
+        // Ref To: 160, 395
+        // Ref From: 210, 495
 
-        const toX = 160;
-        const toY = 395; // Adjusted down to align with TO:
-        const fromX = 210;
-        const fromY = 495; // Adjusted down to align with FROM:
+        const toX = 160 * scale;
+        const toY = 395 * scale;
+        const fromX = 210 * scale;
+        const fromY = 495 * scale;
 
-        // Draw "To: [Name]" value only (Label is on image)
-        // ctx.strokeText(finalTo, toX, toY);
+        // Draw "To: [Name]" value only
         ctx.fillText(finalTo, toX, toY);
 
-        // Draw "From: [Name]" value only (Label is on image)
-        // ctx.strokeText(finalFrom, fromX, fromY);
+        // Draw "From: [Name]" value only
         ctx.fillText(finalFrom, fromX, fromY);
 
         // Show result
@@ -166,7 +167,7 @@ function generateValentine() {
         document.getElementById('resultSection').classList.remove('hidden');
 
         // Update share links
-        updateShareLinks(dataUrl);
+        // updateShareLinks(dataUrl); // Deprecated
 
         // Scroll to result
         document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
