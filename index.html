@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Bullshit Valentines | DeDust Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>No Bullshit Valentines</h1>
+            <p class="subtitle" id="subtitle">Simple. Honest. Direct.</p>
+        </header>
+
+        <main>
+            <div class="section-label">Choose Style</div>
+            <section class="hero-previews">
+                <div class="preview-grid">
+                    <img src="assets/template1.png?v=2" alt="Template 1" class="preview-thumb selected"
+                        onclick="selectTemplate(0)">
+                    <img src="assets/template2.png?v=2" alt="Template 2" class="preview-thumb"
+                        onclick="selectTemplate(1)">
+                    <img src="assets/template3.png?v=2" alt="Template 3" class="preview-thumb"
+                        onclick="selectTemplate(2)">
+                    <img src="assets/template4.png?v=2" alt="Template 4" class="preview-thumb"
+                        onclick="selectTemplate(3)">
+                </div>
+            </section>
+
+            <div class="section-label">Customize</div>
+            <section class="controls">
+                <div class="input-group">
+                    <label for="toInput" id="labelTo">To</label>
+                    <input type="text" id="toInput" placeholder="Name (e.g. Alice)">
+                </div>
+
+                <div class="input-group">
+                    <label for="fromInput" id="labelFrom">From</label>
+                    <input type="text" id="fromInput" placeholder="Name (e.g. Bob)">
+                </div>
+
+
+
+                <button id="generateBtn" onclick="generateValentine()">GENERATE</button>
+            </section>
+
+            <section id="resultSection" class="hidden">
+                <div class="canvas-container">
+                    <canvas id="valentineCanvas" width="800" height="600"></canvas>
+                    <img id="generatedImage" alt="Generated Valentine">
+                </div>
+
+                <div class="actions">
+                    <button class="action-btn" onclick="downloadImage()" id="btnDownload">Download PNG</button>
+                    <button class="action-btn" onclick="copyToClipboard()" id="btnCopy">Copy to Clipboard</button>
+                </div>
+
+                <div class="social-share">
+                    <a href="#" id="shareTelegram" target="_blank" class="share-btn telegram">Share to Telegram</a>
+                    <a href="#" id="shareTwitter" target="_blank" class="share-btn twitter">Share to X</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>No Bullshit Valentines 2026. Simple honest valentines.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
