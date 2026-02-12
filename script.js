@@ -8,10 +8,11 @@ const templates = [
 const translations = {
     en: {
         title: "No Bullshit Valentines",
-        subtitle: "Simple. Honest. Direct.",
         labelTo: "To:",
         labelFrom: "From:",
         labelTemplate: "Template:",
+        labelChooseStyle: "Choose Style",
+        labelCustomize: "Customize",
         placeholderTo: "Name (e.g. Alice)",
         placeholderFrom: "Name (e.g. Bob)",
         generateBtn: "GENERATE",
@@ -24,10 +25,11 @@ const translations = {
     },
     ru: {
         title: "Валентинки Без Буллшита",
-        subtitle: "Просто. Честно. Прямо.",
         labelTo: "Кому:",
         labelFrom: "От кого:",
         labelTemplate: "Шаблон:",
+        labelChooseStyle: "Выберите стиль",
+        labelCustomize: "Настроить",
         placeholderTo: "Имя (например, Алиса)",
         placeholderFrom: "Имя (например, Боб)",
         generateBtn: "СОЗДАТЬ",
@@ -62,9 +64,10 @@ function detectLanguage() {
 function updateUI() {
     const t = translations[currentLang];
     document.querySelector('h1').textContent = t.title;
-    document.getElementById('subtitle').textContent = t.subtitle;
     document.getElementById('labelTo').textContent = t.labelTo;
     document.getElementById('labelFrom').textContent = t.labelFrom;
+    document.getElementById('labelChooseStyle').textContent = t.labelChooseStyle;
+    document.getElementById('labelCustomize').textContent = t.labelCustomize;
     // document.getElementById('labelTemplate').textContent = t.labelTemplate;
     document.getElementById('toInput').placeholder = t.placeholderTo;
     document.getElementById('fromInput').placeholder = t.placeholderFrom;
