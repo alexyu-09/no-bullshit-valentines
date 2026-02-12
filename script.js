@@ -39,6 +39,23 @@ const translations = {
         shareTwitter: "Отправить в X",
         footerText: "No Bullshit Valentines 2026. Простые честные валентинки.",
         templateOptions: ["Шаблон 1 - Цветы", "Шаблон 2 - Сердце", "Шаблон 3 - Крутой", "Шаблон 4 - Честный"]
+    },
+    zh: {
+        title: "拒绝废话情人节",
+        labelTo: "给:",
+        labelFrom: "来自:",
+        labelTemplate: "模板:",
+        labelChooseStyle: "选择风格",
+        labelCustomize: "定制",
+        placeholderTo: "名字 (例如: Alice)",
+        placeholderFrom: "名字 (例如: Bob)",
+        generateBtn: "生成",
+        btnDownload: "下载 PNG",
+        btnCopy: "复制到剪贴板",
+        shareTelegram: "分享到 Telegram",
+        shareTwitter: "分享到 X",
+        footerText: "No Bullshit Valentines 2026. 简单诚实的情人节.",
+        templateOptions: ["模板 1 - 花", "模板 2 - 心", "模板 3 - 酷", "模板 4 - 诚实"]
     }
 };
 
@@ -46,18 +63,38 @@ let currentLang = 'en';
 let selectedTemplateIndex = 0;
 
 // Initialize
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     detectLanguage();
     preloadImages();
     updateUI();
+
+    // Input validation listeners
+    document.getElementById('toInput').addEventListener('input', checkInputs);
+    document.getElementById('fromInput').addEventListener('input', checkInputs);
+    checkInputs(); // Initial check
 });
 
 function detectLanguage() {
     const userLang = navigator.language || navigator.userLanguage;
     if (userLang.startsWith('ru')) {
         currentLang = 'ru';
+    } else if (userLang.startsWith('zh')) {
+        currentLang = 'zh';
     } else {
         currentLang = 'en';
+    }
+}
+
+function checkInputs() {
+    const toText = document.getElementById('toInput').value.trim();
+    const fromText = document.getElementById('fromInput').value.trim();
+    const btn = document.getElementById('generateBtn');
+
+    if (toText && fromText) {
+        btn.disabled = false;
+    } else {
+        btn.disabled = true;
     }
 }
 
@@ -148,13 +185,13 @@ function generateValentine() {
         ctx.textBaseline = "middle";
 
         // Coordinates (Reference based on 800x800)
-        // Ref To: 160, 395
-        // Ref From: 210, 495
+        // Ref To: 160, 395 -> Moved UP to 260
+        // Ref From: 210, 495 -> Moved UP to 360
 
         const toX = 160 * scale;
-        const toY = 395 * scale;
+        const toY = 260 * scale;
         const fromX = 210 * scale;
-        const fromY = 495 * scale;
+        const fromY = 360 * scale;
 
         // Draw "To: [Name]" value only
         ctx.fillText(finalTo, toX, toY);
