@@ -91,22 +91,15 @@ h1 {
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--radius-s);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 2px solid transparent;
-    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    opacity: 0.8;
 }
 
 .preview-thumb:hover {
     opacity: 1;
-    transform: translateY(-2px);
 }
 
-.preview-thumb.selected {
-    border-color: var(--secondary-green);
-    opacity: 1;
-    box-shadow: 0 0 12px rgba(143, 255, 64, 0.3);
-}
+/* Selected state removed as it is now randomized */
 
 .controls {
     width: 100%;

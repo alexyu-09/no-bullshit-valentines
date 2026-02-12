@@ -11,11 +11,12 @@ const translations = {
         labelTo: "To:",
         labelFrom: "From:",
         labelTemplate: "Template:",
-        labelChooseStyle: "Choose Style",
+        labelChooseStyle: "What you can get",
         labelCustomize: "Customize",
         placeholderTo: "Name (e.g. Alice)",
         placeholderFrom: "Name (e.g. Bob)",
         generateBtn: "GENERATE",
+        regenerateBtn: "REGENERATE",
         btnDownload: "Download PNG",
         btnCopy: "Copy to Clipboard",
         shareTelegram: "Share to Telegram",
@@ -28,11 +29,12 @@ const translations = {
         labelTo: "Кому:",
         labelFrom: "От кого:",
         labelTemplate: "Шаблон:",
-        labelChooseStyle: "Выберите стиль",
+        labelChooseStyle: "Что ты можешь получить",
         labelCustomize: "Имена",
         placeholderTo: "Имя (например, Алиса)",
         placeholderFrom: "Имя (например, Боб)",
         generateBtn: "СОЗДАТЬ",
+        regenerateBtn: "ПЕРЕСОЗДАТЬ",
         btnDownload: "Скачать PNG",
         btnCopy: "Скопировать",
         shareTelegram: "Отправить в Telegram",
@@ -45,11 +47,12 @@ const translations = {
         labelTo: "给:",
         labelFrom: "来自:",
         labelTemplate: "模板:",
-        labelChooseStyle: "选择风格",
+        labelChooseStyle: "你能得到什么",
         labelCustomize: "定制",
         placeholderTo: "名字 (例如: Alice)",
         placeholderFrom: "名字 (例如: Bob)",
         generateBtn: "生成",
+        regenerateBtn: "重新生成",
         btnDownload: "下载 PNG",
         btnCopy: "复制到剪贴板",
         shareTelegram: "分享到 Telegram",
@@ -60,7 +63,6 @@ const translations = {
 };
 
 let currentLang = 'en';
-let selectedTemplateIndex = 0;
 
 // Initialize
 // Initialize
@@ -125,29 +127,6 @@ function preloadImages() {
     });
 }
 
-function selectTemplate(index) {
-    selectedTemplateIndex = index;
-    // document.getElementById('templateSelect').value = index;
-    updatePreviewSelection();
-}
-
-function updatePreviewSelection() {
-    // const index = parseInt(document.getElementById('templateSelect').value);
-    // selectedTemplateIndex = index;
-
-    document.querySelectorAll('.preview-thumb').forEach((thumb, i) => {
-        if (i === selectedTemplateIndex) {
-            thumb.classList.add('selected');
-        } else {
-            thumb.classList.remove('selected');
-        }
-    });
-
-    // If result is already shown, regenerate to show new template preview? 
-    // Or just clear it? Let's just keep it simple and wait for Generate click.
-    // Ideally we could auto-update if already generated, but the prompt says "Generate button uses Canvas..."
-}
-
 function generateValentine() {
     const canvas = document.getElementById('valentineCanvas');
     const ctx = canvas.getContext('2d');
@@ -159,7 +138,9 @@ function generateValentine() {
     const finalFrom = fromText ? fromText : (currentLang === 'ru' ? '...' : '...');
 
     const img = new Image();
-    // img.crossOrigin = "Anonymous"; // Removed to fix local file loading. Not needed for same-origin.
+    // Randomly select a template
+    const randomIndex = Math.floor(Math.random() * templates.length);
+    const selectedSrc = templates[randomIndex];
 
     img.onload = () => {
         // Set canvas to match the original image dimensions exactly
@@ -206,8 +187,10 @@ function generateValentine() {
 
         document.getElementById('resultSection').classList.remove('hidden');
 
-        // Update share links
-        // updateShareLinks(dataUrl); // Deprecated
+        // Rename button to REGENERATE
+        const t = translations[currentLang];
+        const genBtn = document.getElementById('generateBtn');
+        genBtn.textContent = t.regenerateBtn;
 
         // Scroll to result
         document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
@@ -218,7 +201,7 @@ function generateValentine() {
         alert("Error loading template image. Please try using a local server (localhost) instead of opening file directly.");
     };
 
-    img.src = templates[selectedTemplateIndex];
+    img.src = selectedSrc;
 }
 
 function downloadImage() {
