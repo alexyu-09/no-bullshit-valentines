@@ -185,13 +185,13 @@ function generateValentine() {
         ctx.textBaseline = "middle";
 
         // Coordinates (Reference based on 800x800)
-        // Ref To: 160, 395 -> Moved UP to 260
-        // Ref From: 210, 495 -> Moved UP to 360
+        // Ref To: 280 -> Moved DOWN to 300 (User request +20px again)
+        // Ref From: 380 -> Moved DOWN to 400 (User request +20px again)
 
-        const toX = 160 * scale;
-        const toY = 260 * scale;
-        const fromX = 210 * scale;
-        const fromY = 360 * scale;
+        const toX = 150 * scale;
+        const toY = 328 * scale;
+        const fromX = 200 * scale;
+        const fromY = 410 * scale;
 
         // Draw "To: [Name]" value only
         ctx.fillText(finalTo, toX, toY);
