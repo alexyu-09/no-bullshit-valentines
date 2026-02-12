@@ -206,31 +206,36 @@ function copyToClipboard() {
     });
 }
 
-function updateShareLinks(dataUrl) {
-    // Note: Most social platforms do not accept base64 image data in share URLs directly for security/length reasons.
-    // We will share the text, and for Telegram/Twitter usually users have to upload the image or we need a backend.
-    // However, the requirement says "Share to Telegram (Telegram WebApp share with PNG dataURL...)".
-    // Telegram Web App `switchInlineQuery` or standard share links don't really support sending the image data blob directly from a static site without an upload.
-    // BUT the requirement is specific. I will try to implement as requested, but standard `https://t.me/share/url` only takes a URL.
-    // For a static site, we can't upload the image to a server to get a URL.
-    // I will implement a text share that indicates "Here is my valentine" and maybe the user has to copy-paste the image.
-    // OR if this is running in a specific context (Telegram WebApp), we could use `tg.sendData`.
-    // Assuming standard web app:
-
-    // For now, I will create a intent link with just text, as sharing a local Blob/DataURL is not possible via standard href.
-    // "Share to Telegram (Telegram WebApp share with PNG dataURL)" might imply using the `sendData` if it was a bot.
-    // The user prompt also says "Share to X (Twitter) (Twitter intent with PNG and text)".
-    // You cannot share an image via Twitter intent from a client-side blob. 
-    // I will stick to text sharing for now and maybe alert the user they can paste the image.
-
+function shareCanvas(platform) {
+    const canvas = document.getElementById('valentineCanvas');
     const text = "My No Bullshit Valentine! 💛";
-    const url = window.location.href; // The site's URL
+    const url = window.location.href;
 
-    // Telegram
-    // https://t.me/share/url?url={url}&text={text}
-    document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    canvas.toBlob(blob => {
+        const file = new File([blob], 'valentine.png', { type: 'image/png' });
 
-    // Twitter
-    // https://twitter.com/intent/tweet?text={text}&url={url}
-    document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        // Try Native Share (Mobile/Safari)
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                title: 'No Bullshit Valentine',
+                text: text,
+                files: [file]
+            }).catch(console.error);
+        } else {
+            // Fallback for Desktop/Unsupported browsers
+            let shareUrl = "";
+            if (platform === 'telegram') {
+                shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+                alert("Image sharing is not supported on this device/browser directly. The image has been generated below - you can copy or download it manually!");
+            } else if (platform === 'twitter') {
+                shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                alert("Image sharing is not supported on this device/browser directly. The image has been generated below - you can copy or download it manually!");
+            }
+            if (shareUrl) window.open(shareUrl, '_blank');
+        }
+    });
+}
+
+function updateShareLinks(dataUrl) {
+    // Deprecated: logic moved to shareCanvas() called on click
 }

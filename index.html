@@ -63,8 +63,10 @@
                 </div>
 
                 <div class="social-share">
-                    <a href="#" id="shareTelegram" target="_blank" class="share-btn telegram">Share to Telegram</a>
-                    <a href="#" id="shareTwitter" target="_blank" class="share-btn twitter">Share to X</a>
+                    <a href="#" id="shareTelegram" onclick="shareCanvas('telegram'); return false;"
+                        class="share-btn telegram">Share to Telegram</a>
+                    <a href="#" id="shareTwitter" onclick="shareCanvas('twitter'); return false;"
+                        class="share-btn twitter">Share to X</a>
                 </div>
             </section>
         </main>
