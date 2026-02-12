@@ -184,6 +184,15 @@ button#generateBtn:active {
     transform: translateY(1px);
 }
 
+button#generateBtn:disabled {
+    background-color: #444;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    opacity: 0.8;
+}
+
 #resultSection {
     margin-top: 32px;
     width: 100%;

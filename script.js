@@ -29,7 +29,7 @@ const translations = {
         labelFrom: "От кого:",
         labelTemplate: "Шаблон:",
         labelChooseStyle: "Выберите стиль",
-        labelCustomize: "Настроить",
+        labelCustomize: "Имена",
         placeholderTo: "Имя (например, Алиса)",
         placeholderFrom: "Имя (например, Боб)",
         generateBtn: "СОЗДАТЬ",
