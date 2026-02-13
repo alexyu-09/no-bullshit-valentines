@@ -154,7 +154,7 @@ function generateValentine() {
         const toX = 150 * scale;
         const toY = 328 * scale;
         const fromX = 200 * scale;
-        const fromY = 400 * scale;
+        const fromY = 410 * scale;
 
         // Draw To and From text
         ctx.fillText(finalTo, toX, toY);
