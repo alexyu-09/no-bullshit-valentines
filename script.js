@@ -1,52 +1,14 @@
-const templates = ['assets/template1.png'];
+const templatesEn = [
+    'assets/en1.png', 'assets/en2.png', 'assets/en3.png', 'assets/en4.png', 'assets/en5.png',
+    'assets/en6.png', 'assets/en7.png', 'assets/en8.png', 'assets/en9.png', 'assets/en10.png'
+];
 
-const phrases = {
-    en: [
-        "You warmed up my cold wallet",
-        "With you I'm on the moon, even when TON is at $1.39",
-        "Let's put our love in LP and stake forever?",
-        "My TVL grows when I think of you",
-        "For you I'm ready to go through KYC",
-        "Let's build a bridge between our hearts?",
-        "I have the seed phrase to your heart",
-        "Let's change one letter in the word DEX?",
-        "I want to taste your honeypot",
-        "Want me to check your liquidity personally?"
-    ],
-    ru: [
-        "Ты согрела мой холодный кошелёк",
-        "Готов заклеймить тебя даже с комиссией в 5 TON",
-        "С тобой я на луне, даже когда TON по $1.39",
-        "При виде тебя мой пул ликвидности наполняется",
-        "Хочу отММить тебя без проскальзывания",
-        "Закинем нашу любовь в LP и застейкаем навечно?",
-        "Мой TVL растёт при мысли о тебе",
-        "Я бы отфармил тебя даже с 0% APY",
-        "Ради тебя я готов пройти KYC",
-        "Давай построим мост между нашими сердцами?",
-        "Ты вызываешь у меня instant finality",
-        "У меня есть сид-фраза от твоего сердца",
-        "Давай сделаем hard fork прямо здесь?",
-        "Хочу от тебя 100 детей",
-        "Давай заменим одну букву в слове DEX?",
-        "Не бойся, мой дружок не квадратный",
-        "Хочу попробовать твой ханипот",
-        "Хочу входить в тебя постепенно, DCA ордером",
-        "Хочешь, я лично проверю твою ликвидность?"
-    ],
-    zh: [
-        "你温暖了我冰冷的钱包",
-        "有你在，我就像在月球，即使TON只有$1.39",
-        "让我们把爱放入LP并永远质押？",
-        "想到你，我的TVL就在增长",
-        "为了你，我愿意通过KYC",
-        "让我们在心之间架起一座桥梁？",
-        "我有你心中的助记词",
-        "让我们改掉DEX里的一个字母？",
-        "我想尝尝你的蜜罐",
-        "想让我亲自检查你的流动性吗？"
-    ]
-};
+const templatesRu = [
+    'assets/ru1.png', 'assets/ru2.png', 'assets/ru3.png', 'assets/ru4.png', 'assets/ru5.png',
+    'assets/ru6.png', 'assets/ru7.png', 'assets/ru8.png', 'assets/ru9.png', 'assets/ru10.png',
+    'assets/ru11.png', 'assets/ru12.png', 'assets/ru13.png', 'assets/ru14.png', 'assets/ru15.png',
+    'assets/ru16.png'
+];
 
 const translations = {
     en: {
@@ -78,21 +40,6 @@ const translations = {
         shareTelegram: "Отправить в Telegram",
         shareTwitter: "Отправить в X",
         footerText: "No Bullshit Valentines 2026. Простые честные валентинки."
-    },
-    zh: {
-        title: "拒绝废话情人节",
-        labelTo: "给:",
-        labelFrom: "来自:",
-        labelLanguage: "语言:",
-        placeholderTo: "名字 (例如: Alice)",
-        placeholderFrom: "名字 (例如: Bob)",
-        generateBtn: "生成",
-        regenerateBtn: "重新生成",
-        btnDownload: "下载 PNG",
-        btnCopy: "复制到剪贴板",
-        shareTelegram: "分享到 Telegram",
-        shareTwitter: "分享到 X",
-        footerText: "No Bullshit Valentines 2026. 简单诚实的情人节."
     }
 };
 
@@ -124,8 +71,6 @@ function detectLanguage() {
     const userLang = navigator.language || navigator.userLanguage;
     if (userLang.startsWith('ru')) {
         currentLang = 'ru';
-    } else if (userLang.startsWith('zh')) {
-        currentLang = 'zh';
     } else {
         currentLang = 'en';
     }
@@ -152,7 +97,7 @@ function updateUI() {
     const labelLang = document.getElementById('labelLanguage');
     if (labelLang) labelLang.textContent = t.labelLanguage;
 
-    document.getElementById('labelCustomize').textContent = t.labelCustomize || (currentLang === 'ru' ? "Имена" : (currentLang === 'zh' ? "定制" : "Customize"));
+    document.getElementById('labelCustomize').textContent = t.labelCustomize || (currentLang === 'ru' ? "Имена" : "Customize");
     document.getElementById('toInput').placeholder = t.placeholderTo;
     document.getElementById('fromInput').placeholder = t.placeholderFrom;
     document.getElementById('generateBtn').textContent = t.generateBtn;
@@ -164,7 +109,8 @@ function updateUI() {
 }
 
 function preloadImages() {
-    templates.forEach(src => {
+    const allTemplates = [...templatesEn, ...templatesRu];
+    allTemplates.forEach(src => {
         const img = new Image();
         img.src = src;
     });
@@ -180,10 +126,14 @@ function generateValentine() {
     const finalFrom = fromText ? fromText : (currentLang === 'ru' ? '...' : '...');
 
     const img = new Image();
-    const selectedSrc = templates[0];
 
-    const langPhrases = phrases[currentLang] || phrases['en'];
-    const randomPhrase = langPhrases[Math.floor(Math.random() * langPhrases.length)];
+    // Select template based on language
+    let selectedSrc;
+    if (currentLang === 'ru') {
+        selectedSrc = templatesRu[Math.floor(Math.random() * templatesRu.length)];
+    } else {
+        selectedSrc = templatesEn[Math.floor(Math.random() * templatesEn.length)];
+    }
 
     img.onload = () => {
         canvas.width = img.width;
@@ -206,46 +156,11 @@ function generateValentine() {
         const fromX = 200 * scale;
         const fromY = 415 * scale;
 
+        // Draw To and From text
         ctx.fillText(finalTo, toX, toY);
         ctx.fillText(finalFrom, fromX, fromY);
 
-        ctx.textAlign = "center";
-        ctx.textBaseline = "top";
-        const phraseFontSize = Math.round(40 * scale);
-        ctx.font = `bold ${phraseFontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
-
-        const phraseX = canvas.width / 2;
-        let phraseY = 130 * scale;
-        const maxWidth = canvas.width - (50 * scale);
-        const lineHeight = phraseFontSize * 1.2;
-
-        const words = randomPhrase.split(' ');
-        let line = '';
-
-        ctx.shadowColor = "rgba(0,0,0,0.8)";
-        ctx.shadowBlur = 4;
-        ctx.lineWidth = 3;
-        ctx.fillStyle = "white";
-
-        for (let i = 0; i < words.length; i++) {
-            const testLine = line + words[i] + ' ';
-            const metrics = ctx.measureText(testLine);
-            const testWidth = metrics.width;
-
-            if (testWidth > maxWidth && i > 0) {
-                ctx.strokeText(line, phraseX, phraseY);
-                ctx.fillText(line, phraseX, phraseY);
-
-                line = words[i] + ' ';
-                phraseY += lineHeight;
-            } else {
-                line = testLine;
-            }
-        }
-        ctx.strokeText(line, phraseX, phraseY);
-        ctx.fillText(line, phraseX, phraseY);
-
-        ctx.textBaseline = "middle";
+        // Note: Phrase generation logic removed as requested.
 
         const dataUrl = canvas.toDataURL('image/png');
         const resultImg = document.getElementById('generatedImage');
@@ -262,7 +177,8 @@ function generateValentine() {
 
     img.onerror = (e) => {
         console.error("Error loading image:", e);
-        alert("Error loading template image. Please try using a local server (localhost) instead of opening file directly.");
+        // Fallback or alert? Just log for now, maybe the specific file is missing in docker.
+        // Assuming docker build copies all existing assets correctly.
     };
 
     img.src = selectedSrc;
