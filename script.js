@@ -297,25 +297,49 @@ function generateValentine() {
         // Random phrase
         const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
 
-        // Draw Random Phrase
+        // Draw Random Phrase with Wrapping
         ctx.textAlign = "center";
+        ctx.textBaseline = "top";
         const phraseFontSize = Math.round(40 * scale);
         ctx.font = `bold ${phraseFontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
 
         const phraseX = canvas.width / 2;
-        // Position it lower, but ensure it's on screen. 
-        // If 800x800, 650 is nice. If 800x600, 500 is nice.
-        // Let's use 80% of height.
-        const phraseY = canvas.height * 0.82;
+        let phraseY = 100 * scale;
+        const maxWidth = canvas.width - (50 * scale);
+        const lineHeight = phraseFontSize * 1.2;
+
+        const words = randomPhrase.split(' ');
+        let line = '';
 
         // Shadow for better visibility
         ctx.shadowColor = "rgba(0,0,0,0.8)";
         ctx.shadowBlur = 4;
         ctx.lineWidth = 3;
-        ctx.strokeText(randomPhrase, phraseX, phraseY);
-        ctx.shadowBlur = 0;
         ctx.fillStyle = "white";
-        ctx.fillText(randomPhrase, phraseX, phraseY);
+
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + ' ';
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+
+            if (testWidth > maxWidth && i > 0) {
+                // Draw current line
+                ctx.strokeText(line, phraseX, phraseY);
+                ctx.fillText(line, phraseX, phraseY);
+
+                // Move down
+                line = words[i] + ' ';
+                phraseY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        // Draw last line
+        ctx.strokeText(line, phraseX, phraseY);
+        ctx.fillText(line, phraseX, phraseY);
+
+        // Reset baseline
+        ctx.textBaseline = "middle";
 
         // Show result
         const dataUrl = canvas.toDataURL('image/png');
