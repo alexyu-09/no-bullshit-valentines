@@ -3,10 +3,8 @@
     --card-bg: #1E1E1E;
     --input-bg: #2F2F2F;
     --primary-orange: #F34E33;
-    /* DeDust Orange */
     --hover-orange: #EC502C;
     --secondary-green: #8FFF40;
-    /* DeDust Lime */
     --text-primary: #F5F5F5;
     --text-secondary: #999999;
     --font-heading: 'Manrope', sans-serif;
@@ -98,8 +96,6 @@ h1 {
 .preview-thumb:hover {
     opacity: 1;
 }
-
-/* Selected state removed as it is now randomized */
 
 .controls {
     width: 100%;
@@ -272,7 +268,6 @@ canvas {
 
 .share-btn.telegram {
     background-color: #2FA6D9;
-    /* Telegram Blue */
     color: white;
 }
 

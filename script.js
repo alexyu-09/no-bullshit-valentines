@@ -1,6 +1,4 @@
-const templates = [
-    'assets/template1.png'
-];
+const templates = ['assets/template1.png'];
 
 const phrases = {
     en: [
@@ -100,16 +98,13 @@ const translations = {
 
 let currentLang = 'en';
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     detectLanguage();
     preloadImages();
 
-    // Update dropdown to match detected logic
     const langSelect = document.getElementById('languageSelect');
     if (langSelect) {
         langSelect.value = currentLang;
-        // Language Switcher Listener
         langSelect.addEventListener('change', (e) => {
             currentLang = e.target.value;
             updateUI();
@@ -118,14 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateUI();
 
-    // Input validation listeners
     document.getElementById('toInput').addEventListener('input', checkInputs);
     document.getElementById('fromInput').addEventListener('input', checkInputs);
-
-    // Generate Button Listener
     document.getElementById('generateBtn').addEventListener('click', generateValentine);
 
-    checkInputs(); // Initial check
+    checkInputs();
 });
 
 function detectLanguage() {
@@ -184,72 +176,52 @@ function generateValentine() {
     const toText = document.getElementById('toInput').value;
     const fromText = document.getElementById('fromInput').value;
 
-    // Default text if empty
     const finalTo = toText ? toText : (currentLang === 'ru' ? '...' : '...');
     const finalFrom = fromText ? fromText : (currentLang === 'ru' ? '...' : '...');
 
     const img = new Image();
-    // Only one template now
     const selectedSrc = templates[0];
 
-    // Select phrase list based on language (default to English if not found)
     const langPhrases = phrases[currentLang] || phrases['en'];
-    // Random phrase
     const randomPhrase = langPhrases[Math.floor(Math.random() * langPhrases.length)];
 
     img.onload = () => {
-        // Set canvas to match the original image dimensions exactly
         canvas.width = img.width;
         canvas.height = img.height;
 
-        // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw background image
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // Calculate scale factor relative to our reference width of 800px
         const referenceWidth = 800;
         const scale = canvas.width / referenceWidth;
 
-        // Define text style with Comic Sans
         const fontSize = Math.round(32 * scale);
         ctx.font = `bold ${fontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
         ctx.fillStyle = "white";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
 
-        // Coordinates (Reference based on 800x800)
-        // User adjusted: +20px down from original (Original Ref To: 280, From: 380)
-        // Adjusting to user's latest preference if any, maintaining ~300/400 range
         const toX = 150 * scale;
         const toY = 328 * scale;
         const fromX = 200 * scale;
         const fromY = 415 * scale;
 
-        // Draw "To: [Name]" value only
         ctx.fillText(finalTo, toX, toY);
-
-        // Draw "From: [Name]" value only
         ctx.fillText(finalFrom, fromX, fromY);
 
-        // Draw Random Phrase with Wrapping
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
         const phraseFontSize = Math.round(40 * scale);
         ctx.font = `bold ${phraseFontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
 
         const phraseX = canvas.width / 2;
-        // User requested 100px from top
         let phraseY = 130 * scale;
-        // User requested 50px total padding (25px each side)
         const maxWidth = canvas.width - (50 * scale);
         const lineHeight = phraseFontSize * 1.2;
 
         const words = randomPhrase.split(' ');
         let line = '';
 
-        // Shadow for better visibility
         ctx.shadowColor = "rgba(0,0,0,0.8)";
         ctx.shadowBlur = 4;
         ctx.lineWidth = 3;
@@ -261,37 +233,30 @@ function generateValentine() {
             const testWidth = metrics.width;
 
             if (testWidth > maxWidth && i > 0) {
-                // Draw current line
                 ctx.strokeText(line, phraseX, phraseY);
                 ctx.fillText(line, phraseX, phraseY);
 
-                // Move down
                 line = words[i] + ' ';
                 phraseY += lineHeight;
             } else {
                 line = testLine;
             }
         }
-        // Draw last line
         ctx.strokeText(line, phraseX, phraseY);
         ctx.fillText(line, phraseX, phraseY);
 
-        // Reset baseline
         ctx.textBaseline = "middle";
 
-        // Show result
         const dataUrl = canvas.toDataURL('image/png');
         const resultImg = document.getElementById('generatedImage');
         resultImg.src = dataUrl;
 
         document.getElementById('resultSection').classList.remove('hidden');
 
-        // Rename button to REGENERATE
         const t = translations[currentLang];
         const genBtn = document.getElementById('generateBtn');
         genBtn.textContent = t.regenerateBtn;
 
-        // Scroll to result
         document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -337,7 +302,6 @@ function shareCanvas(platform) {
     canvas.toBlob(blob => {
         const file = new File([blob], 'valentine.png', { type: 'image/png' });
 
-        // Try Native Share (Mobile/Safari)
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             navigator.share({
                 title: 'No Bullshit Valentine',
@@ -345,7 +309,6 @@ function shareCanvas(platform) {
                 files: [file]
             }).catch(console.error);
         } else {
-            // Fallback for Desktop/Unsupported browsers
             let shareUrl = "";
             if (platform === 'telegram') {
                 shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
