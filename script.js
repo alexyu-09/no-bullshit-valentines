@@ -55,6 +55,7 @@ const translations = {
         title: "No Bullshit Valentines",
         labelTo: "To:",
         labelFrom: "From:",
+        labelLanguage: "Language:",
         placeholderTo: "Name (e.g. Alice)",
         placeholderFrom: "Name (e.g. Bob)",
         generateBtn: "GENERATE",
@@ -69,6 +70,7 @@ const translations = {
         title: "Валентинки Без Буллшита",
         labelTo: "Кому:",
         labelFrom: "От кого:",
+        labelLanguage: "Язьк:",
         placeholderTo: "Имя (например, Алиса)",
         placeholderFrom: "Имя (например, Боб)",
         generateBtn: "СОЗДАТЬ",
@@ -83,6 +85,7 @@ const translations = {
         title: "拒绝废话情人节",
         labelTo: "给:",
         labelFrom: "来自:",
+        labelLanguage: "语言:",
         placeholderTo: "名字 (例如: Alice)",
         placeholderFrom: "名字 (例如: Bob)",
         generateBtn: "生成",
@@ -101,6 +104,18 @@ let currentLang = 'en';
 document.addEventListener('DOMContentLoaded', () => {
     detectLanguage();
     preloadImages();
+
+    // Update dropdown to match detected logic
+    const langSelect = document.getElementById('languageSelect');
+    if (langSelect) {
+        langSelect.value = currentLang;
+        // Language Switcher Listener
+        langSelect.addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            updateUI();
+        });
+    }
+
     updateUI();
 
     // Input validation listeners
@@ -142,7 +157,8 @@ function updateUI() {
     document.getElementById('labelTo').textContent = t.labelTo;
     document.getElementById('labelFrom').textContent = t.labelFrom;
 
-    // Removed labelChooseStyle updating since element is gone
+    const labelLang = document.getElementById('labelLanguage');
+    if (labelLang) labelLang.textContent = t.labelLanguage;
 
     document.getElementById('labelCustomize').textContent = t.labelCustomize || (currentLang === 'ru' ? "Имена" : (currentLang === 'zh' ? "定制" : "Customize"));
     document.getElementById('toInput').placeholder = t.placeholderTo;
