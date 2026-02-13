@@ -1,9 +1,123 @@
 const templates = [
-    'assets/template1.png',
-    'assets/template2.png',
-    'assets/template3.png',
-    'assets/template4.png'
+    'assets/template1.png'
 ];
+
+const phrases = [
+    "You warmed up my cold wallet",
+    "With you I'm on the moon, even when TON is at $1.39",
+    "Let's put our love in LP and stake forever?",
+    "My TVL grows when I think of you",
+    "For you I'm ready to go through KYC",
+    "Let's build a bridge between our hearts?",
+    "I have the seed phrase to your heart",
+    "Let's change one letter in the word DEX?",
+    "I want to taste your honeypot",
+    "Want me to check your liquidity personally?"
+];
+
+// ... translations ...
+
+function generateValentine() {
+    const canvas = document.getElementById('valentineCanvas');
+    const ctx = canvas.getContext('2d');
+    const toText = document.getElementById('toInput').value;
+    const fromText = document.getElementById('fromInput').value;
+
+    // Default text if empty
+    const finalTo = toText ? toText : (currentLang === 'ru' ? '...' : '...');
+    const finalFrom = fromText ? fromText : (currentLang === 'ru' ? '...' : '...');
+
+    const img = new Image();
+    const selectedSrc = templates[0]; // Always use the first one
+
+    // Random phrase
+    const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+    img.onload = () => {
+        // Set canvas to match the original image dimensions exactly
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw background image
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Calculate scale factor relative to our reference width of 800px
+        const referenceWidth = 800;
+        const scale = canvas.width / referenceWidth;
+
+        // Define text style with Comic Sans
+        const fontSize = Math.round(32 * scale);
+        ctx.font = `bold ${fontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
+        ctx.fillStyle = "white";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+
+        // Coordinates (Reference based on 800x800)
+        // Ref To: 300
+        // Ref From: 415 
+
+        const toX = 150 * scale;
+        const toY = 328 * scale;
+        const fromX = 200 * scale;
+        const fromY = 415 * scale;
+
+        // Draw "To: [Name]" value only
+        ctx.fillText(finalTo, toX, toY);
+
+        // Draw "From: [Name]" value only
+        ctx.fillText(finalFrom, fromX, fromY);
+
+        // Draw Random Phrase
+        // Center it at the bottom? Let's try Y=650 based on 800px height
+        ctx.textAlign = "center";
+        // Make phrase slightly larger?
+        const phraseFontSize = Math.round(40 * scale);
+        ctx.font = `bold ${phraseFontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
+
+        // Wrap text if too long? 
+        // For simplicity, let's assume short phrases fit. 
+        // But some are long: "With you I'm on the moon, even when TON is at $1.39"
+        // Let's implement simple wrapping or just ensure max width
+
+        const phraseX = canvas.width / 2;
+        const phraseY = 650 * scale;
+
+        // Simple shadow for readability
+        ctx.shadowColor = "rgba(0,0,0,0.5)";
+        ctx.shadowBlur = 4;
+        ctx.lineWidth = 3;
+        ctx.strokeText(randomPhrase, phraseX, phraseY);
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "white";
+        ctx.fillText(randomPhrase, phraseX, phraseY);
+
+
+        // Show result
+        const dataUrl = canvas.toDataURL('image/png');
+        const resultImg = document.getElementById('generatedImage');
+        resultImg.src = dataUrl;
+
+        document.getElementById('resultSection').classList.remove('hidden');
+
+        // Rename button to REGENERATE
+        const t = translations[currentLang];
+        const genBtn = document.getElementById('generateBtn');
+        genBtn.textContent = t.regenerateBtn;
+
+        // Scroll to result
+        document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    img.onerror = (e) => {
+        console.error("Error loading image:", e);
+        alert("Error loading template image.");
+    };
+
+    img.src = selectedSrc;
+}
 
 const translations = {
     en: {
@@ -160,7 +274,7 @@ function generateValentine() {
 
         // Define text style with scaled font size
         const fontSize = Math.round(32 * scale);
-        ctx.font = `bold ${fontSize}px 'Manrope', sans-serif`;
+        ctx.font = `bold ${fontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
         ctx.fillStyle = "white";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
@@ -179,6 +293,29 @@ function generateValentine() {
 
         // Draw "From: [Name]" value only
         ctx.fillText(finalFrom, fromX, fromY);
+
+        // Random phrase
+        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+        // Draw Random Phrase
+        ctx.textAlign = "center";
+        const phraseFontSize = Math.round(40 * scale);
+        ctx.font = `bold ${phraseFontSize}px 'Comic Sans MS', 'Comic Sans', cursive`;
+
+        const phraseX = canvas.width / 2;
+        // Position it lower, but ensure it's on screen. 
+        // If 800x800, 650 is nice. If 800x600, 500 is nice.
+        // Let's use 80% of height.
+        const phraseY = canvas.height * 0.82;
+
+        // Shadow for better visibility
+        ctx.shadowColor = "rgba(0,0,0,0.8)";
+        ctx.shadowBlur = 4;
+        ctx.lineWidth = 3;
+        ctx.strokeText(randomPhrase, phraseX, phraseY);
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "white";
+        ctx.fillText(randomPhrase, phraseX, phraseY);
 
         // Show result
         const dataUrl = canvas.toDataURL('image/png');
